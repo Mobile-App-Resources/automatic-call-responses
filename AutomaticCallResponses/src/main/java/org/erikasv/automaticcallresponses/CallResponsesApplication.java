@@ -82,8 +82,6 @@ public class CallResponsesApplication extends Application implements SharedPrefe
         Cursor cursor = database.query(MySQLiteHelper.TABLE_PROFILE,
                 allColumns, null, null, null, null, null);
 
-        Log.v(TAG,cursor.getCount()+"");
-
         newProfile.setId(insertId);
         return newProfile;
     }
@@ -108,6 +106,25 @@ public class CallResponsesApplication extends Application implements SharedPrefe
         // Make sure to close the cursor
         cursor.close();
         return profiles;
+    }
+
+    public void activateProfile(Profile prof){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_PROFILE_ACTIVE, 1);
+        prof.setActive(true);
+
+        int update= database.update(MySQLiteHelper.TABLE_PROFILE,values,
+                MySQLiteHelper.COLUMN_ID+" = "+prof.getId(),null);
+        Log.v(TAG,update+"");
+    }
+
+    public void desActivateProfile(Profile prof){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_PROFILE_ACTIVE, 0);
+
+        int update= database.update(MySQLiteHelper.TABLE_PROFILE,values,
+                MySQLiteHelper.COLUMN_ID+" = "+prof.getId(),null);
+        Log.v(TAG,update+"");
     }
 
     private Profile cursorToProfile (Cursor cursor) {

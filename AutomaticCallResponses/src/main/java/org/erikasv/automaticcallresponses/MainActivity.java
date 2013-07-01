@@ -2,6 +2,7 @@ package org.erikasv.automaticcallresponses;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,18 +78,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode== ADD_NEW_PROFILE && resultCode==RESULT_OK){
             Profile newProfile = (Profile) data.getSerializableExtra("newProfile");
-            ((ArrayAdapter<Profile>)listProfiles.getAdapter()).add(newProfile);
+            ((StableArrayAdapter)listProfiles.getAdapter()).add(newProfile);
         }
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<Profile> {
+    private class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
 
         private Context context;
         private Button bActivate,bEdit,bRemove;
+        private ArrayList<Profile> list;
 
         public StableArrayAdapter(Context context, int textViewResourceId, List<Profile> objects) {
-            super(context, textViewResourceId, objects);
             this.context = context;
+            this.list=(ArrayList<Profile>)objects;
+        }
+
+        public void add(Profile prof){
+            list.add(prof);
+            this.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return list.get(position).getId();
         }
 
         @Override
@@ -96,21 +119,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
             View rowView = inflater.inflate(R.layout.item_list_profile, parent, false);
             TextView textView = (TextView) rowView.findViewById(R.id.profile_name);
 
-            textView.setText(getItem(position).getName());
+            textView.setText(((Profile)getItem(position)).getName());
+            if(((Profile)getItem(position)).isActive()) rowView.setBackgroundColor(Color.GREEN);
 
             bActivate = (Button)rowView.findViewById(R.id.bActivate);
             bEdit =(Button)rowView.findViewById(R.id.bEdit);
             bRemove=(Button)rowView.findViewById(R.id.bRemove);
 
-            bActivate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.v(TAG,v.getId()+" -> bAvtivate, ");
-                }
-            });
+            bActivate.setOnClickListener(this);
+            bEdit.setOnClickListener(this);
+            bRemove.setOnClickListener(this);
+
+            bActivate.setTag(position);
+            bEdit.setTag(position);
+            bRemove.setTag(position);
 
             return rowView;
         }
 
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.bActivate:
+                    Profile profile = list.get((Integer)v.getTag());
+                    applicationObject.openDb();
+                    applicationObject.activateProfile(profile);
+                    applicationObject.closeDb();
+                    this.notifyDataSetChanged();
+                    break;
+                case R.id.bEdit:
+                    break;
+                case R.id.bRemove:
+                    break;
+            }
+        }
     }
 }
