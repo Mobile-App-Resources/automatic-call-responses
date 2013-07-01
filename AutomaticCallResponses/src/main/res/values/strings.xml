@@ -28,5 +28,6 @@
     <string name="activate_profile">Activate</string>
     <string name="edit_profile">Edit</string>
     <string name="delete_profile">Remove</string>
+    <string name="sms_service_name">smsservice</string>
 
 </resources>
