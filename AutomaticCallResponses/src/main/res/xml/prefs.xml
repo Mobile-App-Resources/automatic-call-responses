@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+            android:key="activeColor"
+            android:title="@string/activeColor"
+            android:summary="@string/summaryActiveColor"
+            />
+
+    <EditTextPreference
+            android:key="inactiveColor"
+            android:title="@string/inactiveColor"
+            android:summary="@string/summaryInactiveColor"
+            />
+
+    <CheckBoxPreference
+            android:key="onlyContacts"
+            android:title="@string/onlyContacts"
+            android:summary="@string/summaryOnlyContacts"
+            android:defaultValue="true" />
 
 </PreferenceScreen>

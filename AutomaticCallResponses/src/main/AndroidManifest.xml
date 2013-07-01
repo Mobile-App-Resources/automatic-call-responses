@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+                android:name="org.erikasv.automaticcallresponses.PrefsActivity"
+                android:label="@string/title_activity_prefs" >
+        </activity>
+        <activity
+            android:name="org.erikasv.automaticcallresponses.AddProfileActivity"
+            android:label="@string/title_activity_add_profile" >
+        </activity>
     </application>
 
 </manifest>

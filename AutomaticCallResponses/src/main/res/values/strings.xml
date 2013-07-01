@@ -2,7 +2,28 @@
 <resources>
 
     <string name="app_name">Automatic Call Responses</string>
+    <string name="title_activity_add_profile">Add Profile</string>
+    <string name="title_activity_prefs">Settings</string>
+
+    <!-- MainActivity-->
+    <string name="bAdd">Add Profile</string>
+    <string name="settings">Settings</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+
+    <!-- PrefsActivity -->
+    <string name="activeColor">Active color</string>
+    <string name="summaryActiveColor">Enter the color for active profile</string>
+    <string name="inactiveColor">Inactive color</string>
+    <string name="summaryInactiveColor">Enter the color for inactive profiles</string>
+    <string name="onlyContacts">Only contacts</string>
+    <string name="summaryOnlyContacts">Only send SMS to my contacts</string>
+
+    <!-- AddProfileActivity -->
+    <string name="profileName">Name:</string>
+    <string name="hintProfileName">Enter the name for the new profile</string>
+    <string name="sms">Message:</string>
+    <string name="hintSms">Enter the SMS to send</string>
+    <string name="bAcept">Add</string>
+    <string name="bCancel">Cancel</string>
 
 </resources>
