@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         applicationObject.closeDb();
 
         StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
+                android.R.layout.simple_list_item_1, list, applicationObject);
         listProfiles.setAdapter(adapter);
     }
 
@@ -79,84 +79,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if(requestCode== ADD_NEW_PROFILE && resultCode==RESULT_OK){
             Profile newProfile = (Profile) data.getSerializableExtra("newProfile");
             ((StableArrayAdapter)listProfiles.getAdapter()).add(newProfile);
-        }
-    }
-
-    private class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
-
-        private Context context;
-        private Button bActivate,bEdit,bRemove;
-        private ArrayList<Profile> list;
-
-        public StableArrayAdapter(Context context, int textViewResourceId, List<Profile> objects) {
-            this.context = context;
-            this.list=(ArrayList<Profile>)objects;
-        }
-
-        public void add(Profile prof){
-            list.add(prof);
-            this.notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return list.get(position).getId();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.item_list_profile, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.profile_name);
-
-            textView.setText(((Profile)getItem(position)).getName());
-            if(((Profile)getItem(position)).isActive()) rowView.setBackgroundColor(Color.GREEN);
-
-            bActivate = (Button)rowView.findViewById(R.id.bActivate);
-            bEdit =(Button)rowView.findViewById(R.id.bEdit);
-            bRemove=(Button)rowView.findViewById(R.id.bRemove);
-
-            bActivate.setOnClickListener(this);
-            bEdit.setOnClickListener(this);
-            bRemove.setOnClickListener(this);
-
-            bActivate.setTag(position);
-            bEdit.setTag(position);
-            bRemove.setTag(position);
-
-            return rowView;
-        }
-
-        @Override
-        public void onClick(View v) {
-            Profile profile = list.get((Integer)v.getTag());
-            switch (v.getId()){
-                case R.id.bActivate:
-                    applicationObject.openDb();
-                    applicationObject.activateProfile(profile);
-                    applicationObject.closeDb();
-                    this.notifyDataSetChanged();
-                    break;
-                case R.id.bEdit:
-                    break;
-                case R.id.bRemove:
-                    applicationObject.openDb();
-                    applicationObject.deleteProfile(profile);
-                    applicationObject.closeDb();
-                    list.remove(profile);
-                    this.notifyDataSetChanged();
-                    break;
-            }
         }
     }
 }

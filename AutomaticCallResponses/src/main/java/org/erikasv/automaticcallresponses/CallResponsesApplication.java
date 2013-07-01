@@ -121,6 +121,7 @@ public class CallResponsesApplication extends Application implements SharedPrefe
     public void desActivateProfile(Profile prof){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_PROFILE_ACTIVE, 0);
+        prof.setActive(false);
 
         int update= database.update(MySQLiteHelper.TABLE_PROFILE,values,
                 MySQLiteHelper.COLUMN_ID+" = "+prof.getId(),null);

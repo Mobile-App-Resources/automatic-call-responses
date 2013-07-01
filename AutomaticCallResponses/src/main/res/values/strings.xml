@@ -23,10 +23,11 @@
     <string name="hintProfileName">Enter the name for the new profile</string>
     <string name="sms">Message:</string>
     <string name="hintSms">Enter the SMS to send</string>
-    <string name="bAcept">Add</string>
+    <string name="bOk">Ok</string>
     <string name="bCancel">Cancel</string>
     <string name="activate_profile">Activate</string>
     <string name="edit_profile">Edit</string>
     <string name="delete_profile">Remove</string>
+    <string name="desactivate_profile">Desactivate</string>
 
 </resources>
