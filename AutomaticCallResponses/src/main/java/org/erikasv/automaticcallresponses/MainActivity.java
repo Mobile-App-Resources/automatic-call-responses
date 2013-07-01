@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -22,7 +22,11 @@ import java.util.List;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button bNewProfile;
-    private int NEW_PROFILE =1;
+    private ListView listProfiles;
+    private int ADD_NEW_PROFILE =10;
+
+    private CallResponsesApplication applicationObject;
+    private String TAG="ACTIVIDAD_PRINCIPAL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,39 +34,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         bNewProfile = (Button) findViewById(R.id.bAdd);
+        listProfiles = (ListView) findViewById(R.id.listProfiles);
         bNewProfile.setOnClickListener(this);
-        //TODO: Cargar la lista de perfiles.
+        applicationObject=(CallResponsesApplication) getApplication();
 
-        final ListView listview = (ListView) findViewById(R.id.listProfiles);
-        String[] values = new String[] { "TestProfile1","ProfileClickMe","ProfileTest2" };
+        //Cargar la lista de perfiles
+        applicationObject.openDb();
+        ArrayList<Profile> list = (ArrayList<Profile>) applicationObject.getAllProfiles();
+        applicationObject.closeDb();
 
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
+        StableArrayAdapter adapter = new StableArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
-        listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
-            }
-
-        });
+        listProfiles.setAdapter(adapter);
     }
 
     @Override
@@ -85,51 +68,46 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.bAdd) {
             Intent intent = new Intent(this, AddProfileActivity.class);
-            startActivityForResult(intent, NEW_PROFILE);
+            startActivityForResult(intent, ADD_NEW_PROFILE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==NEW_PROFILE && resultCode==RESULT_OK){
-            //TODO Actualizar lista de perfiles!
+        if(requestCode== ADD_NEW_PROFILE && resultCode==RESULT_OK){
+            Profile newProfile = (Profile) data.getSerializableExtra("newProfile");
+            ((ArrayAdapter<Profile>)listProfiles.getAdapter()).add(newProfile);
         }
     }
 
+    private class StableArrayAdapter extends ArrayAdapter<Profile> {
 
-    private class StableArrayAdapter extends ArrayAdapter<String> {
+        private Context context;
+        private Button bActivate,bEdit,bRemove;
 
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-        private final Context context;
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
+        public StableArrayAdapter(Context context, int textViewResourceId, List<Profile> objects) {
             super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
             this.context = context;
         }
 
         @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.item_list_profile, parent, false);
             TextView textView = (TextView) rowView.findViewById(R.id.profile_name);
 
-            textView.setText(getItem(position));
+            textView.setText(getItem(position).getName());
+
+            bActivate = (Button)rowView.findViewById(R.id.bActivate);
+            bEdit =(Button)rowView.findViewById(R.id.bEdit);
+            bRemove=(Button)rowView.findViewById(R.id.bRemove);
+
+            bActivate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.v(TAG,v.getId()+" -> bAvtivate, ");
+                }
+            });
 
             return rowView;
         }

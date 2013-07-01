@@ -3,6 +3,7 @@ package org.erikasv.automaticcallresponses;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,11 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
     private String name, sms;
     private int RESULTADO;
 
+    private CallResponsesApplication applicationObject;
+    private Profile profile;
+
+    private static final String TAG = "ACTIVIDAD_ADDPROFILE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +29,8 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
         editSms = (EditText) findViewById(R.id.editSms);
         bAcept = (Button) findViewById(R.id.bAcept);
         bCancel = (Button) findViewById(R.id.bCancel);
+        profile=null;
+        applicationObject=(CallResponsesApplication) getApplication();
 
         bAcept.setOnClickListener(this);
         bCancel.setOnClickListener(this);
@@ -32,12 +40,18 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bAcept:
-                //TODO Crear un nuevo Perfil
-                RESULTADO=RESULT_OK;
+                name = editName.getText().toString();
+                sms = editSms.getText().toString();
+
+                applicationObject.openDb();
+                profile=applicationObject.createProfile(name,sms);
+                applicationObject.closeDb();
+
+                RESULTADO = RESULT_OK;
                 finish();
                 break;
             case R.id.bCancel:
-                RESULTADO=RESULT_CANCELED;
+                RESULTADO = RESULT_CANCELED;
                 finish();
                 break;
         }
@@ -45,13 +59,11 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
 
     @Override
     public void finish() {
-        Intent datos=new Intent();
-        if(RESULTADO==RESULT_OK){
-            datos.putExtra("name", name);
-            datos.putExtra("sms", sms);
+        Intent datos = new Intent();
+        if (RESULTADO == RESULT_OK) {
+            datos.putExtra("newProfile",profile);
         }
-        setResult(RESULTADO,datos);
+        setResult(RESULTADO, datos);
         super.finish();
     }
-    
 }

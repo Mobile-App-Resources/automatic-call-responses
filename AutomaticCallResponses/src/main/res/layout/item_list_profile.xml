@@ -25,18 +25,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activate_profile"
-                android:id="@+id/button"/>
+                android:id="@+id/bActivate"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_profile"
-                android:id="@+id/button2"/>
+                android:id="@+id/bEdit"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/delete_profile"
-                android:id="@+id/button3"/>
+                android:id="@+id/bRemove"/>
     </TableRow>
 </TableLayout>
