@@ -139,9 +139,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
+            Profile profile = list.get((Integer)v.getTag());
             switch (v.getId()){
                 case R.id.bActivate:
-                    Profile profile = list.get((Integer)v.getTag());
                     applicationObject.openDb();
                     applicationObject.activateProfile(profile);
                     applicationObject.closeDb();
@@ -150,6 +150,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 case R.id.bEdit:
                     break;
                 case R.id.bRemove:
+                    applicationObject.openDb();
+                    applicationObject.deleteProfile(profile);
+                    applicationObject.closeDb();
+                    list.remove(profile);
+                    this.notifyDataSetChanged();
                     break;
             }
         }
