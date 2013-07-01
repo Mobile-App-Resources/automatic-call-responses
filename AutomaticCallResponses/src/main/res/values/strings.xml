@@ -25,5 +25,8 @@
     <string name="hintSms">Enter the SMS to send</string>
     <string name="bAcept">Add</string>
     <string name="bCancel">Cancel</string>
+    <string name="activate_profile">Activate</string>
+    <string name="edit_profile">Edit</string>
+    <string name="delete_profile">Remove</string>
 
 </resources>
