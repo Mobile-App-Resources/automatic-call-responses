@@ -111,21 +111,34 @@ public class CallResponsesApplication extends Application implements SharedPrefe
     public void activateProfile(Profile prof){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_PROFILE_ACTIVE, 1);
-        prof.setActive(true);
-
         int update= database.update(MySQLiteHelper.TABLE_PROFILE,values,
                 MySQLiteHelper.COLUMN_ID+" = "+prof.getId(),null);
+        prof.setActive(true);
+
         Log.v(TAG,update+"");
     }
 
     public void desActivateProfile(Profile prof){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_PROFILE_ACTIVE, 0);
-        prof.setActive(false);
-
         int update= database.update(MySQLiteHelper.TABLE_PROFILE,values,
                 MySQLiteHelper.COLUMN_ID+" = "+prof.getId(),null);
+        prof.setActive(false);
+
         Log.v(TAG,update+"");
+    }
+
+    public Profile updateProfile(Profile prof, String name, String sms){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_PROFILE_NAME, name);
+        values.put(MySQLiteHelper.COLUMN_PROFILE_SMS, sms);
+        int update= database.update(MySQLiteHelper.TABLE_PROFILE,values,
+                MySQLiteHelper.COLUMN_ID+" = "+prof.getId(),null);
+        prof.setName(name);
+        prof.setSms(sms);
+
+        Log.v(TAG,update+"");
+        return prof;
     }
 
     private Profile cursorToProfile (Cursor cursor) {

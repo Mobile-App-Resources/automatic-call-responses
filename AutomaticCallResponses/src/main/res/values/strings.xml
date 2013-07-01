@@ -3,6 +3,7 @@
 
     <string name="app_name">Automatic Call Responses</string>
     <string name="title_activity_add_profile">Add Profile</string>
+    <string name="title_activity_edit_profile">Edit Profile</string>
     <string name="title_activity_prefs">Settings</string>
 
     <!-- MainActivity-->

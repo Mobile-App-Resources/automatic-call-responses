@@ -3,24 +3,28 @@ package org.erikasv.automaticcallresponses;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class AddProfileActivity extends Activity implements View.OnClickListener {
+public class EditProfileActivity extends Activity implements View.OnClickListener {
 
     private Button bOk, bCancel;
     private EditText editName, editSms;
     private String name, sms;
+    private Profile toEdit;
+    private int posProfile;
     private int RESULTADO;
 
     private CallResponsesApplication applicationObject;
     private Profile profile;
 
-    private static final String TAG = "ACTIVIDAD_ADDPROFILE";
+    private static final String TAG = "ACTIVIDAD_EDITPROFILE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v(TAG,"abre onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_profile);
 
@@ -33,6 +37,12 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
 
         bOk.setOnClickListener(this);
         bCancel.setOnClickListener(this);
+
+        Bundle extras = getIntent().getExtras();
+        posProfile=extras.getInt("pos");
+        toEdit = (Profile) extras.get("profile");
+        editName.setText(toEdit.getName());
+        editSms.setText(toEdit.getSms());
     }
 
     @Override
@@ -43,7 +53,7 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
                 sms = editSms.getText().toString();
 
                 applicationObject.openDb();
-                profile=applicationObject.createProfile(name,sms);
+                profile=applicationObject.updateProfile(toEdit, name, sms);
                 applicationObject.closeDb();
 
                 RESULTADO = RESULT_OK;
@@ -60,7 +70,9 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
     public void finish() {
         Intent datos = new Intent();
         if (RESULTADO == RESULT_OK) {
-            datos.putExtra("newProfile",profile);
+            datos.putExtra("pos",posProfile);
+            datos.putExtra("editProfile",profile);
+
         }
         setResult(RESULTADO, datos);
         super.finish();

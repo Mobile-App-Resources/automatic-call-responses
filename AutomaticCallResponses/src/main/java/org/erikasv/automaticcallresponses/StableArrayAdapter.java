@@ -1,7 +1,10 @@
 package org.erikasv.automaticcallresponses;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +17,15 @@ import java.util.List;
 
 class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
 
+    public static final int EDIT_PROFILE = 20;
+
     private Context context;
     private Button bActivate,bDesactivate, bEdit,bRemove;
     private ArrayList<Profile> list;
 
     private CallResponsesApplication applicationObject;
+    private String TAG="ADAPTER__";
+
 
     public StableArrayAdapter(Context context, int textViewResourceId, List<Profile> objects, CallResponsesApplication appObj) {
         this.context = context;
@@ -96,6 +103,10 @@ class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
                 this.notifyDataSetChanged();
                 break;
             case R.id.bEdit:
+                Intent intent= new Intent(context, EditProfileActivity.class);;
+                intent.putExtra("profile",profile);
+                intent.putExtra("pos",(Integer)v.getTag());
+                ((Activity)context).startActivityForResult(intent, EDIT_PROFILE);
                 break;
             case R.id.bRemove:
                 applicationObject.openDb();

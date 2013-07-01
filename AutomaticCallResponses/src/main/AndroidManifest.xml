@@ -31,6 +31,10 @@
                 android:name="org.erikasv.automaticcallresponses.AddProfileActivity"
                 android:label="@string/title_activity_add_profile">
         </activity>
+        <activity
+                android:name="org.erikasv.automaticcallresponses.EditProfileActivity"
+                android:label="@string/title_activity_edit_profile">
+        </activity>
     </application>
 
 </manifest>

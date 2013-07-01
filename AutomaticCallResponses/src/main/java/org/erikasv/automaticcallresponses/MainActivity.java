@@ -1,25 +1,15 @@
 package org.erikasv.automaticcallresponses;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -79,6 +69,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if(requestCode== ADD_NEW_PROFILE && resultCode==RESULT_OK){
             Profile newProfile = (Profile) data.getSerializableExtra("newProfile");
             ((StableArrayAdapter)listProfiles.getAdapter()).add(newProfile);
+        }
+        else if(requestCode==StableArrayAdapter.EDIT_PROFILE && resultCode==RESULT_OK){
+            int pos=data.getIntExtra("pos",0); //ESto debería cambiar
+            Profile editProfile = (Profile) data.getSerializableExtra("editProfile");
+
+            Profile oldPrifle=(Profile)((StableArrayAdapter)listProfiles.getAdapter()).getItem(pos);
+            oldPrifle.setName(editProfile.getName());
+            oldPrifle.setSms(editProfile.getSms());
+            ((StableArrayAdapter) listProfiles.getAdapter()).notifyDataSetChanged();
         }
     }
 }
