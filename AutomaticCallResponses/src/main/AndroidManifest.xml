@@ -8,6 +8,7 @@
             android:minSdkVersion="7"
             android:targetSdkVersion="17"/>
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <application
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
@@ -31,10 +32,16 @@
                 android:name="org.erikasv.automaticcallresponses.AddProfileActivity"
                 android:label="@string/title_activity_add_profile">
         </activity>
-        <activity
+		<activity
                 android:name="org.erikasv.automaticcallresponses.EditProfileActivity"
                 android:label="@string/title_activity_edit_profile">
         </activity>
+
+        <receiver android:name="IncommingCallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
