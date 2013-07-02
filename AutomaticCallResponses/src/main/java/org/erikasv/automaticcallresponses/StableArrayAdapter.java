@@ -93,7 +93,7 @@ class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
                 applicationObject.openDb();
                 applicationObject.activateProfile(profile);
                 applicationObject.closeDb();
-                //TODO Desactivar el otro perfil que esté activo
+                //TODO activar el servicio
                 this.notifyDataSetChanged();
                 break;
             case R.id.bDesactivate:
@@ -101,6 +101,7 @@ class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
                 applicationObject.desActivateProfile(profile);
                 applicationObject.closeDb();
                 this.notifyDataSetChanged();
+                //TODO desactivar el servicio
                 break;
             case R.id.bEdit:
                 Intent intent= new Intent(context, EditProfileActivity.class);;
