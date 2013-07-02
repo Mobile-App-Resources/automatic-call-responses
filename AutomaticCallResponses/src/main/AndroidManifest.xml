@@ -8,6 +8,8 @@
             android:minSdkVersion="7"
             android:targetSdkVersion="17"/>
 
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <application
             android:allowBackup="true"
@@ -32,6 +34,15 @@
                 android:name="org.erikasv.automaticcallresponses.AddProfileActivity"
                 android:label="@string/title_activity_add_profile">
         </activity>
+
+
+        <service
+                android:name=".SMSService"
+                android:icon="@drawable/ic_launcher"
+                android:label="@string/sms_service_name"
+                >
+        </service>
+
 		<activity
                 android:name="org.erikasv.automaticcallresponses.EditProfileActivity"
                 android:label="@string/title_activity_edit_profile">
