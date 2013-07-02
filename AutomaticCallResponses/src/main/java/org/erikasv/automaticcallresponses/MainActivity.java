@@ -17,7 +17,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ListView listProfiles;
     private int ADD_NEW_PROFILE =10;
 
-    private CallResponsesApplication applicationObject;
+    private DataBaseController dbController;
     private String TAG="ACTIVIDAD_PRINCIPAL";
 
     @Override
@@ -28,15 +28,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bNewProfile = (Button) findViewById(R.id.bAdd);
         listProfiles = (ListView) findViewById(R.id.listProfiles);
         bNewProfile.setOnClickListener(this);
-        applicationObject=(CallResponsesApplication) getApplication();
+        dbController =new DataBaseController(this);
 
         //Cargar la lista de perfiles
-        applicationObject.openDb();
-        ArrayList<Profile> list = (ArrayList<Profile>) applicationObject.getAllProfiles();
-        applicationObject.closeDb();
+        dbController.openDb();
+        ArrayList<Profile> list = (ArrayList<Profile>) dbController.getAllProfiles();
+        dbController.closeDb();
 
         StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list, applicationObject);
+                android.R.layout.simple_list_item_1, list);
         listProfiles.setAdapter(adapter);
     }
 

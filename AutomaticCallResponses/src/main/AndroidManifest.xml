@@ -36,12 +36,6 @@
                 android:name="org.erikasv.automaticcallresponses.EditProfileActivity"
                 android:label="@string/title_activity_edit_profile">
         </activity>
-
-        <receiver android:name="IncommingCallReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

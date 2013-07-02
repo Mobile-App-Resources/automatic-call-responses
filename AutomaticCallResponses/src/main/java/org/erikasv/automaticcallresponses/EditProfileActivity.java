@@ -17,7 +17,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private int posProfile;
     private int RESULTADO;
 
-    private CallResponsesApplication applicationObject;
+    private DataBaseController dbController;
     private Profile profile;
 
     private static final String TAG = "ACTIVIDAD_EDITPROFILE";
@@ -33,7 +33,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         bOk = (Button) findViewById(R.id.bOk);
         bCancel = (Button) findViewById(R.id.bCancel);
         profile=null;
-        applicationObject=(CallResponsesApplication) getApplication();
+        dbController =new DataBaseController(this);
 
         bOk.setOnClickListener(this);
         bCancel.setOnClickListener(this);
@@ -52,9 +52,9 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 name = editName.getText().toString();
                 sms = editSms.getText().toString();
 
-                applicationObject.openDb();
-                profile=applicationObject.updateProfile(toEdit, name, sms);
-                applicationObject.closeDb();
+                dbController.openDb();
+                profile= dbController.updateProfile(toEdit, name, sms);
+                dbController.closeDb();
 
                 RESULTADO = RESULT_OK;
                 finish();

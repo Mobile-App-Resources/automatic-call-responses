@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +22,14 @@ class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
     private Button bActivate,bDesactivate, bEdit,bRemove;
     private ArrayList<Profile> list;
 
-    private CallResponsesApplication applicationObject;
+    private DataBaseController dbController;
     private String TAG="ADAPTER__";
 
 
-    public StableArrayAdapter(Context context, int textViewResourceId, List<Profile> objects, CallResponsesApplication appObj) {
+    public StableArrayAdapter(Context context, int textViewResourceId, List<Profile> objects) {
         this.context = context;
         this.list=(ArrayList<Profile>)objects;
-        this.applicationObject=appObj;
+        dbController = new DataBaseController(context);
     }
 
     public void add(Profile prof){
@@ -90,16 +89,17 @@ class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
         Profile profile = list.get((Integer)v.getTag());
         switch (v.getId()){
             case R.id.bActivate:
-                applicationObject.openDb();
-                applicationObject.activateProfile(profile);
-                applicationObject.closeDb();
+                dbController.openDb();
+                dbController.activateProfile(profile);
+                dbController.closeDb();
                 //TODO activar el servicio
+
                 this.notifyDataSetChanged();
                 break;
             case R.id.bDesactivate:
-                applicationObject.openDb();
-                applicationObject.desActivateProfile(profile);
-                applicationObject.closeDb();
+                dbController.openDb();
+                dbController.desActivateProfile(profile);
+                dbController.closeDb();
                 this.notifyDataSetChanged();
                 //TODO desactivar el servicio
                 break;
@@ -110,9 +110,9 @@ class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
                 ((Activity)context).startActivityForResult(intent, EDIT_PROFILE);
                 break;
             case R.id.bRemove:
-                applicationObject.openDb();
-                applicationObject.deleteProfile(profile);
-                applicationObject.closeDb();
+                dbController.openDb();
+                dbController.deleteProfile(profile);
+                dbController.closeDb();
                 list.remove(profile);
                 this.notifyDataSetChanged();
                 break;

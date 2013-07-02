@@ -14,7 +14,7 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
     private String name, sms;
     private int RESULTADO;
 
-    private CallResponsesApplication applicationObject;
+    private DataBaseController dbController;
     private Profile profile;
 
     private static final String TAG = "ACTIVIDAD_ADDPROFILE";
@@ -29,7 +29,7 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
         bOk = (Button) findViewById(R.id.bOk);
         bCancel = (Button) findViewById(R.id.bCancel);
         profile=null;
-        applicationObject=(CallResponsesApplication) getApplication();
+        dbController = new DataBaseController(this);
 
         bOk.setOnClickListener(this);
         bCancel.setOnClickListener(this);
@@ -42,9 +42,9 @@ public class AddProfileActivity extends Activity implements View.OnClickListener
                 name = editName.getText().toString();
                 sms = editSms.getText().toString();
 
-                applicationObject.openDb();
-                profile=applicationObject.createProfile(name,sms);
-                applicationObject.closeDb();
+                dbController.openDb();
+                profile= dbController.createProfile(name,sms);
+                dbController.closeDb();
 
                 RESULTADO = RESULT_OK;
                 finish();
