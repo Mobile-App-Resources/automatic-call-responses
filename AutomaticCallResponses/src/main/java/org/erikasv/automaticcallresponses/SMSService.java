@@ -3,6 +3,8 @@ package org.erikasv.automaticcallresponses;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.telephony.SmsManager;
 
@@ -13,11 +15,22 @@ import java.util.ArrayList;
  */
 public class SMSService extends Service {
     private static final int MAX_SMS_MESSAGE_LENGTH = 160;
+    private String message;
+    private IncommingCallReceiver receiver = new IncommingCallReceiver();
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        message=intent.getExtras().getString("message");
+        registerReceiver(receiver,new IntentFilter("android.intent.action.PHONE_STATE"));
+        return super.onStartCommand(intent, flags, startId);
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    //TODO, revisar de acuerdo a la configuración, en caso de ser necesario si el telefono está en los contactos
 
     private void sendSMS(String phonenumber,String message) {
 

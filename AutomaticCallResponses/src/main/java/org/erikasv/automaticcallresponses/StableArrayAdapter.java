@@ -92,16 +92,21 @@ class StableArrayAdapter extends BaseAdapter implements View.OnClickListener {
                 dbController.openDb();
                 dbController.activateProfile(profile);
                 dbController.closeDb();
-                //TODO activar el servicio
-
                 this.notifyDataSetChanged();
+
+                Intent service = new Intent(context,SMSService.class);
+                service.putExtra("message",profile.getSms());
+                context.startService(service);
+
                 break;
             case R.id.bDesactivate:
                 dbController.openDb();
                 dbController.desActivateProfile(profile);
                 dbController.closeDb();
                 this.notifyDataSetChanged();
+
                 //TODO desactivar el servicio
+
                 break;
             case R.id.bEdit:
                 Intent intent= new Intent(context, EditProfileActivity.class);;
